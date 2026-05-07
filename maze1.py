@@ -47,4 +47,112 @@ solver_finished = False
 
 solver_row = 0
 solver_col = 0
+def draw_maze():
 
+    screen.fill(WHITE)
+
+    for (r, c) in dead_ends:
+
+        pygame.draw.rect(
+            screen,
+            BLUE,
+            (
+                c * CELL_SIZE + 5,
+                r * CELL_SIZE + 5,
+                CELL_SIZE - 10,
+                CELL_SIZE - 10
+            )
+        )
+
+    for (r, c) in solver_stack:
+
+        pygame.draw.rect(
+            screen,
+            GREEN,
+            (
+                c * CELL_SIZE + 8,
+                r * CELL_SIZE + 8,
+                CELL_SIZE - 16,
+                CELL_SIZE - 16
+            )
+        )
+
+    for row in range(ROWS):
+        for col in range(COLS):
+
+            x = col * CELL_SIZE
+            y = row * CELL_SIZE
+
+            if northWall[row][col]:
+                pygame.draw.line(
+                    screen,
+                    BLACK,
+                    (x, y),
+                    (x + CELL_SIZE, y),
+                    2
+                )
+
+            if eastWall[row][col]:
+                pygame.draw.line(
+                    screen,
+                    BLACK,
+                    (x + CELL_SIZE, y),
+                    (x + CELL_SIZE, y + CELL_SIZE),
+                    2
+                )
+
+    pygame.draw.line(
+        screen,
+        BLACK,
+        (0, 0),
+        (0, HEIGHT),
+        2
+    )
+
+    pygame.draw.line(
+        screen,
+        BLACK,
+        (0, HEIGHT),
+        (WIDTH, HEIGHT),
+        2
+    )
+
+    pygame.draw.rect(
+        screen,
+        GREEN,
+        (5, 5, CELL_SIZE - 10, CELL_SIZE - 10)
+    )
+
+    pygame.draw.rect(
+        screen,
+        RED,
+        (
+            (COLS - 1) * CELL_SIZE + 5,
+            (ROWS - 1) * CELL_SIZE + 5,
+            CELL_SIZE - 10,
+            CELL_SIZE - 10
+        )
+    )
+
+    if not generation_complete:
+        pygame.draw.circle(
+            screen,
+            RED,
+            (
+                current_col * CELL_SIZE + CELL_SIZE // 2,
+                current_row * CELL_SIZE + CELL_SIZE // 2
+            ),
+            CELL_SIZE // 4
+        )
+
+    if solver_started and not solver_finished:
+
+        pygame.draw.circle(
+            screen,
+            BLACK,
+            (
+                solver_col * CELL_SIZE + CELL_SIZE // 2,
+                solver_row * CELL_SIZE + CELL_SIZE // 2
+            ),
+            CELL_SIZE // 4
+        )
